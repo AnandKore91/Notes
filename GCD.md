@@ -1,5 +1,5 @@
 # Grand Central Dispatch (GCD)
-    Grand Central Dispatch (GCD) is a low-level API for managing concurrent operations. It can help you improve your app’s responsiveness by deferring computationally expensive tasks to the background. It’s an easier concurrency model to work with than locks and threads.
+Grand Central Dispatch (GCD) is a low-level API for managing concurrent operations. It can help you improve your app’s responsiveness by deferring computationally expensive tasks to the background. It’s an easier concurrency model to work with than locks and threads.
 
 ## Concurrency
 - The operating system scheduler manages the threads independently of each other. Each thread can execute concurrently, but it’s up to the system to decide if this happens, when this happens, and how it happens.
@@ -47,58 +47,56 @@
     An asynchronous function returns immediately, ordering the task to start but not waiting for it to complete. Thus, an asynchronous function does not block the current thread of execution from proceeding on to the next function. You can schedule a unit of work asynchronously by calling DispatchQueue.async(execute:).
 
 ## Closures:
-    Closures are self-contained, callable blocks of code you can store and pass around.
+Closures are self-contained, callable blocks of code you can store and pass around.
 
-    Each task you submit to a DispatchQueue is a *DispatchWorkItem*. You can configure the behavior of a *DispatchWorkItem* such as its QoS class or whether to spawn a new detached thread.
+Each task you submit to a DispatchQueue is a *DispatchWorkItem*. You can configure the behavior of a *DispatchWorkItem* such as its QoS class or whether to spawn a new detached thread.
 
 ## Sample:
-```
-DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-  guard let self = self else {
-    return
-  }
-  let overlayImage = self.faceOverlayImageFrom(self.image)
-  DispatchQueue.main.async { [weak self] in
-    self?.fadeInNewImage(overlayImage)
-  }
-}
-```
+
+    DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+      guard let self = self else {
+        return
+      }
+      let overlayImage = self.faceOverlayImageFrom(self.image)
+      DispatchQueue.main.async { [weak self] in
+        self?.fadeInNewImage(overlayImage)
+      }
+    }
+
 Here’s what the code’s doing step by step:
 
-    1. You move the work to a background global queue and run the work in the closure asynchronously. This lets viewDidLoad() finish earlier on the main thread and makes the loading feel more snappy. Meanwhile, the face detection processing is started and will finish at some later time.
+   1. You move the work to a background global queue and run the work in the closure asynchronously. This lets viewDidLoad() finish earlier on the main thread and makes the loading feel more snappy. Meanwhile, the face detection processing is started and will finish at some later time.
 
-    2. At this point, the face detection processing is complete and you’ve generated a new image. Since you want to use this new image to update your UIImageView, you add a new closure to the main queue. Remember – anything that modifies the UI must run on the main thread!
+   2. At this point, the face detection processing is complete and you’ve generated a new image. Since you want to use this new image to update your UIImageView, you add a new closure to the main queue. Remember – anything that modifies the UI must run on the main thread!
 
-    3. Finally, you update the UI with fadeInNewImage(_:)_ which performs a fade-in transition of the new googly eyes image.
+   3. Finally, you update the UI with fadeInNewImage(_:)_ which performs a fade-in transition of the new googly eyes image.
 
 ## Quick guide of how and when to use the various queues with async:
-    1. **Main Queue**: This is a common choice to update the UI after completing work in a task on a concurrent queue. To do this, you code one closure inside another. Targeting the main queue and calling async guarantees that this new task will execute sometime after the current method finishes.
+   1. **Main Queue**: This is a common choice to update the UI after completing work in a task on a concurrent queue. To do this, you code one closure inside another. Targeting the main queue and calling async guarantees that this new task will execute sometime after the current method finishes.
 
-    2. **Global Queue**: This is a common choice to perform non-UI work in the background.
+   2. **Global Queue**: This is a common choice to perform non-UI work in the background.
 
-    3. **Custom Serial Queue**: A good choice when you want to perform background work serially and track it. This eliminates resource contention and race conditions since you know only one task at a time is executing. Note that if you need the data from a method, you must declare another closure to retrieve it or consider using sync.
+   3. **Custom Serial Queue**: A good choice when you want to perform background work serially and track it. This eliminates resource contention and race conditions since you know only one task at a time is executing. Note that if you need the data from a method, you must declare another closure to retrieve it or consider using sync.
 
 ## Delaying Task Execution:
-```
-// 1
-let delayInSeconds = 2.0
+    // 1
+    let delayInSeconds = 2.0
 
-// 2
-DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) { [weak self] in
-  guard let self = self else {
-    return
-  }
+    // 2
+    DispatchQueue.main.asyncAfter(deadline: .now() + delayInSeconds) { [weak self] in
+      guard let self = self else {
+        return
+      }
 
-  if PhotoManager.shared.photos.count > 0 {
-    self.navigationItem.prompt = nil
-  } else {
-    self.navigationItem.prompt = "Add photos with faces to modify them!"
-  }
+      if PhotoManager.shared.photos.count > 0 {
+        self.navigationItem.prompt = nil
+      } else {
+        self.navigationItem.prompt = "Add photos with faces to modify them!"
+      }
 
-  // 3
-  self.navigationController?.viewIfLoaded?.setNeedsLayout()
-}
-```
+      // 3
+      self.navigationController?.viewIfLoaded?.setNeedsLayout()
+    }
 
 Here’s what’s going on above:
     1. You specify the amount of time to delay.
@@ -106,8 +104,8 @@ Here’s what’s going on above:
     3. Force the navigation bar to lay out after setting the prompt to make sure it looks kosher.
 
 ## Why not use Timer?
-    You could consider using it if you have repeated tasks which are easier to schedule with Timer. Here are two reasons to stick with dispatch queue’s asyncAfter().
+You could consider using it if you have repeated tasks which are easier to schedule with Timer. Here are two reasons to stick with dispatch queue’s asyncAfter().
 
-    One is readability. To use Timer you have to define a method, then create the timer with a selector or invocation to the defined method. With DispatchQueue and asyncAfter(), you simply add a closure.
+One is readability. To use Timer you have to define a method, then create the timer with a selector or invocation to the defined method. With DispatchQueue and asyncAfter(), you simply add a closure.
 
-    Timer is scheduled on run loops so you would also have to make sure you scheduled it on the correct run loop (and in some cases for the correct run loop modes). In this regard, working with dispatch queues is easier.
+Timer is scheduled on run loops so you would also have to make sure you scheduled it on the correct run loop (and in some cases for the correct run loop modes). In this regard, working with dispatch queues is easier.
