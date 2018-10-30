@@ -1,3 +1,8 @@
+* [Delegate](#Delegation)
+* [Notification](#Notification)
+* [Protocol](#Protocol)
+
+
 # Delegation
 **Delegation is a simple and powerful pattern in which one object in a program acts on behalf of, or in
 coordination with, another object.**
