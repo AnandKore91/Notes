@@ -109,3 +109,44 @@ You could consider using it if you have repeated tasks which are easier to sched
 One is readability. To use Timer you have to define a method, then create the timer with a selector or invocation to the defined method. With DispatchQueue and asyncAfter(), you simply add a closure.
 
 Timer is scheduled on run loops so you would also have to make sure you scheduled it on the correct run loop (and in some cases for the correct run loop modes). In this regard, working with dispatch queues is easier.
+
+## Canceling Blocks in GCD:
+Suppose we're scheduling a block for delayed execution with `dispatch_after`:
+
+```
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    NSLog(@"Hello.");
+});
+```
+
+To cancel the block before it gets a chance to execute, we first have to obtain a reference to it. We can do this by creating a wrapper object of type `dispatch_block`.
+
+```
+dispatch_block_t work = dispatch_block_create(0, ^{
+    NSLog(@"Hello.");
+});
+dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), work);
+
+```
+
+Now if we place a call to `dispatch_block_cancel` immediately after the call to `dispatch_after`, you'll notice the block never executes:
+
+```
+dispatch_block_cancel(work);
+```
+
+One thing to note is that `dispatch_block_cancel` is not pre-emptive. If the worker block is in the middle of a long-running operation, `dispatch_block_cancel` won't force-terminate it. To do this, we have to periodically test for cancellation with `dispatch_block_testcancel`. Here's an example:
+
+```
+for (...) {
+    /* do some work */
+    [NSThread sleepForTimeInterval:0.2];
+
+    if (dispatch_block_testcancel(work) != 0) {
+        /* exit gracefully */
+        return;
+    }
+}
+```
+
+And that's all it takes to cancel blocks in GCD!
