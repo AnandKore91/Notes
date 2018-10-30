@@ -78,7 +78,11 @@ NSString *AMMyNotification = @"AMMyNotication";
 
 
 # Protocol
-**A protocol declares a programmatic interface that any class may choose to implement.**
+**A protocol defines a blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality. A protocol declares a programmatic interface that any class may choose to implement.**
+
+* In Swift, The protocol can then be adopted by a class, structure, or enumeration to provide an actual implementation of those requirements.
+* Any type that satisfies the requirements of a protocol is said to conform to that protocol.
+* In addition to specifying requirements that conforming types must implement, you can extend a protocol to implement some of these requirements or to implement additional functionality that conforming types can take advantage of.
 
 * Protocols make it possible for two classes distantly related by inheritance to communicate with each other to
 accomplish a certain goal. They thus offer an alternative to subclassing.
@@ -90,7 +94,7 @@ accomplish a certain goal. They thus offer an alternative to subclassing.
 There are two varieties of protocol, formal and informal:
 
 1. **A formal protocol** declares a list of methods that client classes are expected to implement.
-    * Formal protocols have their own declaration, adoption, and type‑checking syntax. You can designate methods whose implementation is required or optional with the @required and @optional keywords.
+    * Formal protocols have their own declaration, adoption, and type‑checking syntax. You can designate methods whose implementation is required or optional with the `@required` and `@optional` keywords.
     * Subclasses inherit formal protocols adopted by their ancestors. A formal protocol can also adopt other protocols.
 *Formal protocols are an extension to the Objective‑C language.*
 
@@ -102,3 +106,64 @@ class without subclassing it.)*
     * Until optional protocol methods were introduced in Objective‑C 2.0, informal protocols were essential to the way Foundation and AppKit classes implemented delegation.
 
 ## Adopting and Conforming to a Formal Protocol
+A class can either declare adoption of a formal protocol or inherit adoption from a superclass. The
+adoption syntax uses angle brackets in the `@interface` declaration of the class. In the following
+example, the CAAnimation class declares its superclass to be NSObject and then formally adopts
+three protocols.
+```
+@interface CAAnimation : NSObject <NSCopying, CAMediaTiming, CAAction>
+```
+A class—and any instance of that class—are said to conform to a formal protocol if the class adopts
+the protocol or inherits from another class that adopts it. Conformance to a protocol also means that
+a class implements all the required methods of the protocol. You can determine at runtime whether
+an object conforms to a protocol by sending it a conformsToProtocol: message.
+
+## Creating Your Own Protocol
+You may also declare your own protocol and implement the code that communicates with adopters of
+that protocol. For a description of how to do this, see the document that definitively describes
+protocols.
+
+**Objective-C**
+```
+@protocol SomethingDelegate <NSObject>
+
+@optional
+- (void)something:(id)something didFailWithError:(NSError *)error;
+
+@required
+- (void)something:(id)something didFinishLoadingItem:(id)item;
+
+@end
+```
+
+**Swift**
+Custom types state that they adopt a particular protocol by placing the protocol’s name after the type’s name, separated by a colon, as part of their definition. Multiple protocols can be listed, and are separated by commas:
+```
+protocol SomeProtocol {
+    // protocol definition goes here
+}
+
+struct SomeStructure: FirstProtocol, SomeProtocol {
+    // structure definition goes here
+}
+```
+
+If a class has a superclass, list the superclass name before any protocols it adopts, followed by a comma:
+```
+class SomeClass: SomeSuperclass, FirstProtocol, AnotherProtocol {
+    // class definition goes here
+}
+```
+
+## Property Requirements (Swift)
+A protocol can require any conforming type to provide an instance property or type property with a particular name and type. The protocol doesn’t specify whether the property should be a stored property or a computed property—it only specifies the required property name and type. The protocol also specifies whether each property must be gettable or gettable and settable.
+* Property requirements are always declared as **variable properties**, prefixed with the var keyword.
+* **Gettable and settable properties** are indicated by writing `{ get set }` after their type declaration,
+* **Gettable properties** are indicated by writing `{ get }`.
+
+```
+protocol SomeProtocol {
+    var mustBeSettable: Int { get set }
+    var doesNotNeedToBeSettable: Int { get }
+}
+```
