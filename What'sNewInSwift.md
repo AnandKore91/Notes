@@ -7,7 +7,7 @@
 * [Swift 4.2](#What’s new in Swift 4.2)
 
 
-## What's new in Swift 2.2
+# What's new in Swift 2.2
 - ++ and -- are deprecated
 - Why??
     - Writing `++` rather than `+=` 1 is hardly a dramatic time saving
@@ -31,7 +31,7 @@
 - Compile-time Swift version checking.
 - New documentation keywords: recommended, recommendedover, and keyword.
 
-## What's new in Swift 3.0
+# What's new in Swift 3.0
 - All function parameters have labels unless you request otherwise.
     `SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 10)
     SKAction.rotate(byAngle: CGFloat(M_PI_2), duration: 10)
@@ -53,7 +53,7 @@
 - Swifty importing of C functions
 - Verbs and nouns
 
-## What's new in Swift 4.0
+# What's new in Swift 4.0
 - Swifty encoding and decoding.
     `Codable protocol` that lets you `serialize` and `deserialize` custom data types without writing any special code – and without having to worry about losing your value types. Even better, you can choose how you want the data to be serialized: you can use `classic property list` format or even `JSON`.
 
@@ -83,7 +83,7 @@
     let bigParts = characters[..<3]
     let smallParts = characters[3...]`
 
-## What’s new in Swift 4.1
+# What’s new in Swift 4.1
 - Synthesized Equatable and Hashable
     The `Equatable` protocol allows Swift to compare one instance of a type against another. When we say `5 == 5`, Swift understands what that means because Int conforms to Equatable, which means it implements a function describing what `==` means for two instances of Int.
 
@@ -106,7 +106,7 @@
 - flatMap is now (partly) compactMap.
 
 
-## What’s new in Swift 4.2
+# What’s new in Swift 4.2
 - Derived collections of enum cases.
     `CaseIterable protocol` that automatically generates an array property of all cases in an enum.
 
