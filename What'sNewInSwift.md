@@ -100,3 +100,103 @@
 
 
 ## What’s new in Swift 4.2
+- Derived collections of enum cases.
+    `CaseIterable protocol` that automatically generates an array property of all cases in an enum.
+
+    `enum Pasta: CaseIterable {
+        case cannelloni, fusilli, linguine, tagliatelle
+    }`
+
+    `for shape in Pasta.allCases {
+        print("I like eating \(shape).")
+    }`
+
+- Warning and error diagnostic directives.
+    The two new directives are `#warning` and `#error:` the former will force Xcode to issue a warning when building your code, and the latter will issue a compile error so your code won’t build at all. Both of these are useful for different reasons:
+
+    - `#warning` is mainly useful as a reminder to yourself or others that some work is incomplete. Xcode templates often use `#warning` to mark method stubs that you should replace with your own code.
+
+    - `#error` is mainly useful if you ship a library that requires other developers to provide some data. For example, an authentication key for a web API – you want users to include their own key, so using `#error` will force them to change that code before continuing.
+
+    -  `#warning("This is terrible method of encryption")`
+    -  `#error("Please enter your API key below then delete this line.")`
+
+- Dynamic member look up.
+    At the core of this feature is a new attribute called @dynamicMemberLookup, which instructs Swift to call a subscript method when accessing properties. This subscript method, subscript(dynamicMember:), is required: you’ll get passed the string name of the property that was requested, and can return any value you like.
+
+    `@dynamicMemberLookup
+    struct Person {
+        subscript(dynamicMember member: String) -> String {
+            let properties = ["name": "Taylor Swift", "city": "Nashville"]
+            return properties[member, default: ""]
+        }
+    }`
+
+    `let person = Person()
+    print(person.name)
+    print(person.city)
+    print(person.favoriteIceCream)
+    `
+    That will compile cleanly and run, even though `name, city, and favoriteIceCream` do not exist as properties on the `Person` type. Instead, they are all looked up at runtime: that code will print `“Taylor Swift” and “Nashville”` for the first two calls to `print(),` then an empty string for the final one because our dictionary doesn’t store anything for `favoriteIceCream`.
+
+- Enhanced conditional conformances.
+- Random number generation and shuffling.
+    You can generate random numbers by calling the `random()` method on whatever numeric type you want, providing the range you want to work with. For example, this generates a random number in the range 1 through 4, inclusive on both sides:
+
+    `let randomInt = Int.random(in: 1..<5)`
+
+- Simpler, more secure hashing.
+    From Swift 4.1 onwards conformance to `Hashable` can be synthesized by the compiler. However, if you want your own hashing implementation – for example, if your type has many properties but you know that one of them was enough to identify it uniquely – you still need to write your own code using whatever algorithm you thought was best.
+
+    `struct iPad: Hashable {
+        var serialNumber: String
+        var capacity: Int
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(serialNumber)
+        }
+    }`
+
+    `let first = iPad(serialNumber: "12345", capacity: 256)
+    let second = iPad(serialNumber: "54321", capacity: 512)
+
+    var hasher = Hasher()
+    hasher.combine(first)
+    hasher.combine(second)
+    let hash = hasher.finalize()`
+
+- Checking sequence elements match a condition.
+    `allSatisfy()` method that checks whether all items in a sequence pass a condition. For example, if we had an array of exam results like this:
+
+    `let scores = [85, 88, 95, 92]`
+
+    We could decide whether a student passed their course by checking whether all their exam results were 85 or higher:
+
+    `let passed = scores.allSatisfy { $0 >= 85 }`
+
+- In-place collection element removal.
+    `removeAll(where:)` method that performs a high-performance, in-place filter for collections. You give it a closure condition to run, and it will strip out all objects that match the condition.
+
+    For example, if you have a collection of names and want to remove people called “Terry”, you’d use this:
+    `var pythons = ["John", "Michael", "Graham", "Terry", "Eric", "Terry"]
+    pythons.removeAll { $0.hasPrefix("Terry") }
+    print(pythons)`
+
+    Now, you might very well think that you could accomplish that by using filter() like this:
+    `pythons = pythons.filter { !$0.hasPrefix("Terry") }
+    `
+
+- Boolean toggling.
+    `toggle()` method to booleans that flip them between true and false.
+
+    The entire code to implement proposal is only a handful of lines of Swift:
+    `extension Bool {
+       mutating func toggle() {
+          self = !self
+       }
+    }`
+
+    However, the end result makes for much more natural Swift code:
+    `var loggedIn = false
+    loggedIn.toggle()`
+    
