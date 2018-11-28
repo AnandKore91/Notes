@@ -1,5 +1,12 @@
 # What's new Swift
 
+* [Swift 2.2](## What's new in Swift 2.2)
+* [Swift 3.0](## What's new in Swift 3.0)
+* [Swift 4.0](## What's new in Swift 4.0)
+* [Swift 4.1](## What’s new in Swift 4.1)
+* [Swift 4.2](## What’s new in Swift 4.2)
+
+
 ## What's new in Swift 2.2
 - ++ and -- are deprecated
 - Why??
@@ -199,4 +206,3 @@
     However, the end result makes for much more natural Swift code:
     `var loggedIn = false
     loggedIn.toggle()`
-    
