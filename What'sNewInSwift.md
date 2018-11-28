@@ -36,19 +36,21 @@
 # What's new in Swift 3.0
 - All function parameters have labels unless you request otherwise.
     ```
-    SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 10)
-    SKAction.rotate(byAngle: CGFloat(M_PI_2), duration: 10)
+    SKAction.rotateByAngle(CGFloat(M_PI_2), duration: 10) // old
+    SKAction.rotate(byAngle: CGFloat(M_PI_2), duration: 10) // new
 
-    UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline)
-    UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline)
+    UIFont.preferredFontForTextStyle(UIFontTextStyleSubheadline) // old
+    UIFont.preferredFont(forTextStyle: UIFontTextStyle.subheadline) // new
     ```
 - Omit needless words
     ```
-    let blue = UIColor.blueColor()
-    let min = numbers.minElement()
+    let blue = UIColor.blueColor() // old
+    let min = numbers.minElement() // old
+    ```
     with
-    let blue = UIColor.blue
-    let min = numbers.min()
+    ```
+    let blue = UIColor.blue // new
+    let min = numbers.min() // new
     ```
 - UpperCamelCase has been replaced with lowerCamelCase for enums and properties.
     ```
@@ -66,8 +68,8 @@
     `Codable protocol` that lets you `serialize` and `deserialize` custom data types without writing any special code – and without having to worry about losing your value types. Even better, you can choose how you want the data to be serialized: you can use `classic property list` format or even `JSON`.
     ```
     struct Language: Codable {
-    var name: String
-    var version: Int
+        var name: String
+        var version: Int
     }
 
     let swift = Language(name: "Swift", version: 4)`
@@ -79,10 +81,12 @@
     ```
 
 - Multi-line string literals.
+    ```
     """
     hey
     there,
     """
+    ```
 - Improved keypaths for key-value coding
 - Improved dictionary functionality
 - Strings are collections again!
@@ -113,9 +117,9 @@
 - Target environment testing.
     ```
     #if targetEnvironment(simulator)
-    // code for the simulator here
+        // code for the simulator here
     #else
-    // code for real devices here
+        // code for real devices here
     #endif
     ```
 - flatMap is now (partly) compactMap.
