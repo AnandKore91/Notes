@@ -2,7 +2,7 @@
 
 ## Encryption types, why?
 
-Three type: 
+## Three type: 
 1. Symmetric 
 2. Asymmetric
 3. Hash encryption. 
