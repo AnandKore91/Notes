@@ -46,8 +46,7 @@
     - However, Core Data allows developers to setup multiple stores containing different entities. 
 
 
-￼
-
+￼![Core Data overview](https://github.com/AnandKore91/Notes/blob/master/Images/CoreDataOverview.jpg "Core Data overview")
 
 1. A managed object model that describes the entities in the stores.
 2. A managed object context that provides a scratch pad for managed objects.
