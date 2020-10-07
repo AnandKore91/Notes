@@ -1,9 +1,12 @@
 # Encryption 
+
 ## Encryption types, why?
+
 Three type: 
-    1. Symmetric 
-    2. Asymmetric
-    3. Hash encryption. 
+1. Symmetric 
+2. Asymmetric
+3. Hash encryption. 
+
 The Advanced Encryption Standard (AES) is a symmetric block cipher
 
 ## Libs / 3rd Party
