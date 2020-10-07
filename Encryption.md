@@ -1,10 +1,14 @@
 # Encryption 
 ## Encryption types, why?
-    - Three type: Symmetric, Asymmetric and Hash encryption. 
-    - The Advanced Encryption Standard (AES) is a symmetric block cipher
+Three type: 
+    1. Symmetric 
+    2. Asymmetric
+    3. Hash encryption. 
+The Advanced Encryption Standard (AES) is a symmetric block cipher
+
 ## Libs / 3rd Party
-    - https://github.com/krzyzanowskim/CryptoSwift
-    - https://medium.com/@vialyx/security-data-transforms-with-swift-aes256-on-ios-6509917497d
+* https://github.com/krzyzanowskim/CryptoSwift
+* https://medium.com/@vialyx/security-data-transforms-with-swift-aes256-on-ios-6509917497d
 
 ## Symmetric cryptography
 * encrypter, and decrypter — need access to the same key.
@@ -24,9 +28,9 @@
 * it’s impossible to reverse it back to the original data
 * given knowledge of only the hash, it’s infeasible to create another string of data that will create the same hash (called a “collision” in crypto parlance)
 * Three resistance:
-    * Pre-Image Resistance: 
-    * when: h(x) = z
-    * hard to find: h(z)-1 = x
+    - Pre-Image Resistance: 
+    - when: h(x) = z
+    - hard to find: h(z)-1 = x
 * Second Pre-Image Resistance: if a hash function h for an input x produces hash value h(x), then it should be difficult to find any other input value y such that h(y) = h(x).
 
 ￼![TypesOfEncryption.png](https://github.com/AnandKore91/Notes/blob/master/Images/TypesOfEncryption.png "TypesOfEncryption.png")
