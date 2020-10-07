@@ -63,7 +63,7 @@ The process of adding the records to Core Data has following tasks
 - Create an entity i.e User
 - Create new record with this newly created User Entity
 - Set values for the records for each key
-￼
+ ![Core Data overview](https://github.com/AnandKore91/Notes/blob/master/Images/CreateRecord.png "Core Data overview")
 
 ## Retrieve Data
 The process of fetching the saved data is very easy as well. It has the following task
@@ -71,14 +71,14 @@ The process of fetching the saved data is very easy as well. It has the followin
 - if required use predicate for filter data
 - Fetch the result from context in the form of array of [NSManagedObject]
 - Iterate through an array to get value for the specific key
-￼
+￼![Core Data overview](https://github.com/AnandKore91/Notes/blob/master/Images/RetrieveData.png "Core Data overview")
 
 ## Update Data
 For update record first we have to fetch/Retrieve data with predicate as same as above Retrieve data process. Then below few steps to follow
 - Prepare the request with predicate for the entity (User in our example)
 - Fetch record and Set New value with key
 - And Last Save context same as create data.
-￼
+￼![Core Data overview](https://github.com/AnandKore91/Notes/blob/master/Images/UpdateData.png "Core Data overview")
 
 
 ## Delete Data
@@ -86,12 +86,13 @@ For delete record first we have to find object which we want to delete by fetchR
 - Prepare the request with predicate for the entity (User in our example)
 - Fetch record and which we want to delete
 - And make context.delete(object) call (ref image attached below)
-
+![Core Data overview](https://github.com/AnandKore91/Notes/blob/master/Images/DeleteData.png "Core Data overview")
 ￼
 
 
-    - Multiple threading in Core data. 
-        - https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/Concurrency.html#//apple_ref/doc/uid/TP40001075-CH24-SW2
+- Multiple threading in Core data. 
+- https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/CoreData/Concurrency.html#//apple_ref/doc/uid/TP40001075-CH24-SW2
+
 		let privateMOC = NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType). // MainQueueConcurrencyType and PrivateQueueConcurrencyType.
 		privateMOC.parentContext = moc
 		 
