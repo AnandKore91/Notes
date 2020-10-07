@@ -6,6 +6,14 @@
 * [Swift 4.1](#What’s-new-in-Swift-4.1)
 * [Swift 4.2](#What’s-new-in-Swift-4.2)
 
+# Reference URLs
+- Xcode: https://developer.apple.com/xcode/whats-new/
+- iOS: https://developer.apple.com/ios/whats-new/
+
+### Release Notes:
+- iOS & iPadOS: https://developer.apple.com/documentation/ios-ipados-release-notes
+- Swift: https://docs.swift.org/swift-book/RevisionHistory/RevisionHistory.html
+
 
 # What's new in Swift 2.2
 - ++ and -- are deprecated
